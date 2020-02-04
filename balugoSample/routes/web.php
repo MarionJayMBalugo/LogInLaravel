@@ -29,3 +29,5 @@ Route::get('/login/admin', 'Auth\LoginController@showAdminLoginForm');
     Route::view('/home', 'home')->middleware('auth');
     Route::view('/admin', 'admin');
     Route::view('/writer', 'writer');
+    //hi are you gin
+    
