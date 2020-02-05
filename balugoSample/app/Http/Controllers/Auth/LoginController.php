@@ -39,6 +39,7 @@ class LoginController extends Controller
         $this->middleware('guest:admin')->except('logout');
         $this->middleware('guest:writer')->except('logout');
     }
+    //  for admin Login
     public function showAdminLoginForm(){
         return view('auth.login',['url'=>'admin']);
     }
@@ -49,6 +50,7 @@ class LoginController extends Controller
         }
         return  back()->withInput($request->only('email','remember'));
     }
+    //  for writers Login
     public function showWriterLoginForm(){
         return view('auth.login',['url'=>'writer']);
     }
@@ -61,5 +63,20 @@ class LoginController extends Controller
             return redirect()->intended('/writer');
         }
         return back()->withInput($request->only('email','remember'));
+    }
+    //  for regular users Login
+    public function showRegularUserLoginForm(){
+       
+        return view('auth.login',['url'=>'regularUser']);
+    }
+    public function regularUserLogin(Request $request){
+        
+        $this->validate($request,['email'=>'required|email','password'=>'required|min:6']);
+        
+        if(Auth::guard('regular_user')->attempt(['email'=>$request->email,'password'=>$request->password],$request->get('remember'))){
+            return redirect()->intended('/regularUser');         
+        }
+       echo "dfdf";
+        // return  back()->withInput($request->only('email','remember'));
     }
 }

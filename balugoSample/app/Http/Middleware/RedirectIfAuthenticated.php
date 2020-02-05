@@ -23,9 +23,10 @@ class RedirectIfAuthenticated
         if ($guard == "writer" && Auth::guard($guard)->check()) {
             return redirect()->route('writerDashboard');
         }
-        if (Auth::guard($guard)->check()) {
-            return redirect()->route('guestDashboard');
+        if ($guard == "regular_user" && Auth::guard($guard)->check()) {
+            return redirect()->route('regularUserDashboard');
         }
+        
         return $next($request);
     }
     

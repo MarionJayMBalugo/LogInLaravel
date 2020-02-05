@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Writer;
+use App\Models\RegularUser;
 
 class RegisterController extends Controller
 {
@@ -42,6 +44,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
         $this->middleware('guest:admin');
         $this->middleware('guest:writer');
+        $this->middleware('guest:regular_user');
     }
     public function showAdminRegisterForm()
     {
@@ -51,6 +54,10 @@ class RegisterController extends Controller
     public function showWriterRegisterForm()
     {
         return view('auth.register', ['url' => 'writer']);
+    }
+    public function showRegularUserRegisterForm()
+    {
+        return view('auth.register', ['url' => 'regularUser']);
     }
     protected function createAdmin(Request $request){
         $this->validator($request->all())->validate();
@@ -62,6 +69,12 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
         $this->registerWriter($request->all());
         return redirect()->intended('login/writer');
+    }
+    protected function createRegularUser(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $this->registerRegularUser($request->all());
+        return redirect()->intended('login/regularUser');
     }
     /**
      * Get a validator for an incoming registration request.
@@ -96,6 +109,14 @@ class RegisterController extends Controller
     protected function registerWriter(array $data)
     {
         return Writer::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
+    protected function registerRegularUser(array $data)
+    {
+        return RegularUser::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),

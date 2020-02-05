@@ -54,6 +54,10 @@ return [
             'driver' => 'session',
             'provider' => 'writers',
         ],
+        'regular_user' => [
+            'driver' => 'session',
+            'provider' => 'regular_users',
+        ],
     ],
 
     /*
@@ -85,6 +89,10 @@ return [
         'writers' => [
             'driver' => 'eloquent',
             'model' => App\Models\Writer::class,
+        ],
+        'regular_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\RegularUser::class,
         ],
 
         // 'users' => [
